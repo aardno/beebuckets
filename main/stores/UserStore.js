@@ -11,5 +11,13 @@ Dispatcher.register(function(action) {
     case UserActions.Types.GOT_USER_DATA:
       UserStore.receiveData(action.data)
       break
+    case UserActions.Types.REGISTER_USER:
+
+    case UserActions.Types.LOGIN_USER:
+
+    case UserActions.Types.UPDATE_USER:
+
+    case UserActions.Types.LOGOUT_USER:
+
   }
 })

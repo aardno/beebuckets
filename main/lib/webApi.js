@@ -9,7 +9,16 @@ export function post(url, data, actionType) {
   buildRequest(request.post(url), data, actionType)
 }
 
+export function put(url, data, actionType) {
+  buildRequest(request.put(url), data, actionType)
+}
+
+export function delete(url, data, actionType) {
+  buildRequest(request.delete(url), null, actionType)
+}
+
 export function buildRequest(method, data, actionType) {
+  if(!data) {
   method
     .set('Accept', 'application/json')
     .set('Authorization', sessionStorage.getItem('accessToken'))
@@ -27,6 +36,26 @@ export function buildRequest(method, data, actionType) {
         })
       }
     })
+  } else {
+    method
+      .set('Accept', 'application/json')
+      .set('Authorization', sessionStorage.getItem('accessToken'))
+      .body(data)
+      .end(function(error, res){
+        if (res) {
+          var resData
+          if (res.error) {
+            resData = getErrors(res)
+          } else {
+            resData = JSON.parse(res.text)
+          }
+          Dispatcher.dispatch({
+            actionType: actionType,
+            data: resData
+          })
+        }
+      })
+  }
 }
 
 function getErrors(res) {
